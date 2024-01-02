@@ -68,9 +68,20 @@ command_unregister(struct command_struct *cmd)
 }
 
 export int
-liblksu_command(const char *name)
+liblksu_exec(int argc, const char *argv[])
 {
     struct command_struct *cmd;
+
+    cmd = command_find(*argv);
+    if (!cmd)
+        return -EINVAL;
+
+    return cmd->handle(argc, argv);
+}
+
+export int
+liblksu_command(const char *name)
+{
     unsigned int argc;
     char **argv;
     int retval;
@@ -79,13 +90,7 @@ liblksu_command(const char *name)
     if (bfdev_unlikely(!argv))
         return -EINVAL;
 
-    cmd = command_find(*argv);
-    if (!cmd) {
-        bfdev_argv_destory(NULL, argv);
-        return -EINVAL;
-    }
-
-    retval = cmd->handle(argc, argv);
+    retval = liblksu_exec(argc, (const char **)argv);
     bfdev_argv_destory(NULL, argv);
 
     return retval;

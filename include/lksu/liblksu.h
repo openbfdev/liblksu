@@ -11,6 +11,9 @@ extern "C" {
 #endif
 
 extern int
+liblksu_exec(int argc, const char *argv[]);
+
+extern int
 liblksu_command(const char *name);
 
 #ifdef __cplusplus

@@ -4,7 +4,7 @@
 #
 
 cmake_minimum_required(VERSION 3.12)
-project(liblksu VERSION 1.0.0 LANGUAGES C)
+project(lksu VERSION 1.0.0 LANGUAGES C)
 
 include(GNUInstallDirs)
 include(CheckIncludeFiles)
@@ -25,7 +25,7 @@ add_library(lksu_object OBJECT ${LKSU_LIBRARY})
 target_link_libraries(lksu_object bfdev.a)
 add_library(lksu ALIAS lksu_object)
 
-if(${CMAKE_PROJECT_NAME} STREQUAL "liblksu")
+if(${CMAKE_PROJECT_NAME} STREQUAL "lksu")
     add_library(lksu_static STATIC ${LKSU_LIBRARY})
     add_library(lksu_shared SHARED ${LKSU_LIBRARY})
 
@@ -45,6 +45,11 @@ if(${CMAKE_PROJECT_NAME} STREQUAL "liblksu")
         SOVERSION ${PROJECT_VERSION_MAJOR}
         LINKER_LANGUAGE C
         MACOSX_RPATH ON
+    )
+
+    install(DIRECTORY
+        ${PROJECT_SOURCE_DIR}/include/lksu
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     )
 
     install(TARGETS

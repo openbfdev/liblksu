@@ -10,7 +10,7 @@
 #include <bfdev/stringify.h>
 
 typedef int
-(*command_handle)(int argc, char *argv[]);
+(*command_handle)(int argc, const char *argv[]);
 
 struct command_struct {
     const char *name;
@@ -27,22 +27,23 @@ command_register(struct command_struct *cmd);
 extern int
 command_unregister(struct command_struct *cmd);
 
-#define DEFINE_COMMAND(name)                \
-static int                                  \
-__command_##name(int argc, char *argv[]);   \
-                                            \
-static struct command_struct                \
-__##name##command = {                       \
-    .name = __bfdev_stringify(name),        \
-    .handle = __command_##name,             \
-}                                           \
-                                            \
-static __bfdev_ctor void                    \
-{                                           \
-    command_register(&__##name##command);   \
-}                                           \
-                                            \
-static int                                  \
-__command_##name(int argc, char *argv[])
+#define DEFINE_COMMAND(func)                        \
+static int                                          \
+__##func##_handle(int argc, const char *argv[]);    \
+                                                    \
+static struct command_struct                        \
+__##func##_command = {                              \
+    .name = __bfdev_stringify(func),                \
+    .handle = __##func##_handle,                    \
+};                                                  \
+                                                    \
+static __bfdev_ctor void                            \
+__##func##_init(void)                               \
+{                                                   \
+    command_register(&__##func##_command);          \
+}                                                   \
+                                                    \
+static int                                          \
+__##func##_handle(int argc, const char *argv[])
 
 #endif /* _LOCAL_COMMAND_H_ */
