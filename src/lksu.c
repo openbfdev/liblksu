@@ -72,6 +72,9 @@ liblksu_exec(int argc, const char *argv[])
 {
     struct command_struct *cmd;
 
+    if (!argc)
+        return -EINVAL;
+
     cmd = command_find(*argv);
     if (!cmd)
         return -EINVAL;
@@ -85,6 +88,9 @@ liblksu_command(const char *name)
     unsigned int argc;
     char **argv;
     int retval;
+
+    if (!name)
+        return -EINVAL;
 
     argv = bfdev_argv_split(NULL, name, &argc);
     if (bfdev_unlikely(!argv))
