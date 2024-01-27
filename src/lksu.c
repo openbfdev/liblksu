@@ -3,7 +3,7 @@
  * Copyright(c) 2023 John Sanpe <sanpeqf@gmail.com>
  */
 
-#define MODULE_NAME "lksu"
+#define MODULE_NAME "liblksu"
 #define bfdev_log_fmt(fmt) MODULE_NAME ": " fmt
 
 #include <lksu/liblksu.h>

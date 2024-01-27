@@ -3,6 +3,9 @@
  * Copyright(c) 2023 John Sanpe <sanpeqf@gmail.com>
  */
 
+#define MODULE_NAME "liblksu-commands"
+#define bfdev_log_fmt(fmt) MODULE_NAME ": " fmt
+
 #include <command.h>
 #include <stdint.h>
 #include <bfdev.h>
@@ -21,7 +24,7 @@ DEFINE_COMMAND(enable)
     struct lksu_message msg;
 
     if (argc != 2) {
-        printf("Usage: enable token\n");
+        bfdev_log_err("Usage: enable token\n");
         return -EINVAL;
     }
 
@@ -36,7 +39,7 @@ DEFINE_COMMAND(disable)
     struct lksu_message msg;
 
     if (argc != 2) {
-        printf("Usage: disable token\n");
+        bfdev_log_err("Usage: disable token\n");
         return -EINVAL;
     }
 
@@ -51,7 +54,7 @@ DEFINE_COMMAND(flush)
     struct lksu_message msg;
 
     if (argc != 2) {
-        printf("Usage: flush token\n");
+        bfdev_log_err("Usage: flush token\n");
         return -EINVAL;
     }
 
@@ -66,7 +69,7 @@ DEFINE_COMMAND(g_hidden_add)
     struct lksu_message msg;
 
     if (argc != 3) {
-        printf("Usage: g_hidden_add token path\n");
+        bfdev_log_err("Usage: g_hidden_add token path\n");
         return -EINVAL;
     }
 
@@ -82,7 +85,7 @@ DEFINE_COMMAND(g_hidden_remove)
     struct lksu_message msg;
 
     if (argc != 3) {
-        printf("Usage: g_hidden_remove token path\n");
+        bfdev_log_err("Usage: g_hidden_remove token path\n");
         return -EINVAL;
     }
 
@@ -98,7 +101,7 @@ DEFINE_COMMAND(g_uid_add)
     struct lksu_message msg;
 
     if (argc != 3) {
-        printf("Usage: g_uid_add token uid\n");
+        bfdev_log_err("Usage: g_uid_add token uid\n");
         return -EINVAL;
     }
 
@@ -114,7 +117,7 @@ DEFINE_COMMAND(g_uid_remove)
     struct lksu_message msg;
 
     if (argc != 3) {
-        printf("Usage: g_uid_remove token uid\n");
+        bfdev_log_err("Usage: g_uid_remove token uid\n");
         return -EINVAL;
     }
 
@@ -130,7 +133,7 @@ DEFINE_COMMAND(token_add)
     struct lksu_message msg;
 
     if (argc != 3) {
-        printf("Usage: token_add token token_to_add\n");
+        bfdev_log_err("Usage: token_add token token_to_add\n");
         return -EINVAL;
     }
 
@@ -146,7 +149,7 @@ DEFINE_COMMAND(token_remove)
     struct lksu_message msg;
 
     if (argc != 3) {
-        printf("Usage: token_remove token token_to_remove\n");
+        bfdev_log_err("Usage: token_remove token token_to_remove\n");
         return -EINVAL;
     }
 
