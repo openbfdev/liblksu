@@ -5,7 +5,7 @@
 
 #include <command.h>
 #include <stdint.h>
-#include <string.h>
+#include <bfdev.h>
 #include <errno.h>
 #include <sys/prctl.h>
 #include <lksu/kernel.h>
@@ -29,7 +29,6 @@ DEFINE_COMMAND(enable)
     strncpy(msg.token, argv[1], LKSU_TOKEN_LEN);
 
     return lksu_syscall(&msg);
-
 }
 
 DEFINE_COMMAND(disable)
@@ -42,6 +41,21 @@ DEFINE_COMMAND(disable)
     }
 
     msg.func = LKSU_DISABLE;
+    strncpy(msg.token, argv[1], LKSU_TOKEN_LEN);
+
+    return lksu_syscall(&msg);
+}
+
+DEFINE_COMMAND(flush)
+{
+    struct lksu_message msg;
+
+    if (argc != 2) {
+        printf("Usage: flush token\n");
+        return -EINVAL;
+    }
+
+    msg.func = LKSU_FLUSH;
     strncpy(msg.token, argv[1], LKSU_TOKEN_LEN);
 
     return lksu_syscall(&msg);
