@@ -22,15 +22,15 @@ set(LKSU_LIBRARY
 )
 
 add_library(lksu_object OBJECT ${LKSU_LIBRARY})
-target_link_libraries(lksu_object bfdev.a)
+target_link_libraries(lksu_object bfdev)
 add_library(lksu ALIAS lksu_object)
 
 if(${CMAKE_PROJECT_NAME} STREQUAL "lksu")
     add_library(lksu_static STATIC ${LKSU_LIBRARY})
     add_library(lksu_shared SHARED ${LKSU_LIBRARY})
 
-    target_link_libraries(lksu_static bfdev.a)
-    target_link_libraries(lksu_shared bfdev.so)
+    target_link_libraries(lksu_static bfdev)
+    target_link_libraries(lksu_shared bfdev)
 
     set_target_properties(lksu_static
         PROPERTIES
