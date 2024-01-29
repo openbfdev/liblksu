@@ -4,7 +4,7 @@
 #
 
 cmake_minimum_required(VERSION 3.12)
-project(lksu VERSION 1.0.0 LANGUAGES C)
+project(liblksu VERSION 1.0.0 LANGUAGES C)
 
 include(GNUInstallDirs)
 include(CheckIncludeFiles)
@@ -14,6 +14,7 @@ file(GLOB_RECURSE LKSU_HEADERS
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_BINARY_DIR}/generated)
 include(${PROJECT_SOURCE_DIR}/src/build.cmake)
 
 set(LKSU_LIBRARY
@@ -21,13 +22,28 @@ set(LKSU_LIBRARY
     ${LKSU_SOURCES}
 )
 
+add_custom_target(
+    lksu_kernel
+    COMMAND bash -c \"
+        install -Dpm 644
+        ${PROJECT_SOURCE_DIR}/kernel/src/lksu.h
+        ${PROJECT_BINARY_DIR}/generated/lksu/kernel.h
+    \"
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+
 add_library(lksu_object OBJECT ${LKSU_LIBRARY})
-target_link_libraries(lksu_object bfdev)
 add_library(lksu ALIAS lksu_object)
 
-if(${CMAKE_PROJECT_NAME} STREQUAL "lksu")
+add_dependencies(lksu_object lksu_kernel)
+target_link_libraries(lksu_object bfdev)
+
+if(${CMAKE_PROJECT_NAME} STREQUAL "liblksu")
     add_library(lksu_static STATIC ${LKSU_LIBRARY})
     add_library(lksu_shared SHARED ${LKSU_LIBRARY})
+
+    add_dependencies(lksu_static lksu_kernel)
+    add_dependencies(lksu_shared lksu_kernel)
 
     target_link_libraries(lksu_static bfdev)
     target_link_libraries(lksu_shared bfdev)
@@ -49,6 +65,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL "lksu")
 
     install(DIRECTORY
         ${PROJECT_SOURCE_DIR}/include/lksu
+        ${PROJECT_BINARY_DIR}/generated/lksu
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     )
 
