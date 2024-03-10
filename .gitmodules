@@ -1,3 +1,3 @@
 [submodule "kernel"]
 	path = kernel
-	url = https://github.com/kernsu/lksu-kernel.git
+	url = https://github.com/openbfdev/lksu-kernel.git
