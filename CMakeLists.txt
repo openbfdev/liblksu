@@ -13,6 +13,8 @@ file(GLOB_RECURSE LKSU_HEADERS
     ${PROJECT_SOURCE_DIR}/include/*.h
 )
 
+option(LIBLKSU_CLI "Build CLI" ON)
+
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_BINARY_DIR}/generated)
 include(${PROJECT_SOURCE_DIR}/src/build.cmake)
@@ -37,6 +39,11 @@ add_library(lksu ALIAS lksu_object)
 
 add_dependencies(lksu_object lksu_kernel)
 target_link_libraries(lksu_object bfdev)
+
+if(LIBLKSU_CLI)
+    add_executable(lksu-cmd main.c)
+    target_link_libraries(lksu-cmd lksu)
+endif()
 
 if(${CMAKE_PROJECT_NAME} STREQUAL "liblksu")
     add_library(lksu_static STATIC ${LKSU_LIBRARY})
