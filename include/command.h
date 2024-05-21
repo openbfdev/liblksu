@@ -43,6 +43,12 @@ __##func##_init(void)                               \
     command_register(&__##func##_command);          \
 }                                                   \
                                                     \
+static __bfdev_dtor void                            \
+__##func##_exit(void)                               \
+{                                                   \
+    command_unregister(&__##func##_command);        \
+}                                                   \
+                                                    \
 static int                                          \
 __##func##_handle(int argc, const char *argv[])
 
