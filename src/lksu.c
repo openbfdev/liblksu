@@ -71,13 +71,20 @@ export int
 liblksu_exec(int argc, const char *argv[])
 {
     struct command_struct *cmd;
+    unsigned int count;
 
     if (!argc)
         return -EINVAL;
 
     cmd = command_find(*argv);
-    if (!cmd)
-        return -EINVAL;
+    if (!cmd) {
+        bfdev_log_err("command not found: '%s'\n", *argv);
+        return -BFDEV_ENOENT;
+    }
+
+    bfdev_log_debug("handled: '%s'\n", cmd->name);
+    for (count = 1; count < argc; ++count)
+        bfdev_log_debug("\targ%u: '%s'\n", count, argv[count]);
 
     return cmd->handle(argc, argv);
 }
